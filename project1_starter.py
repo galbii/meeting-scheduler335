@@ -21,21 +21,26 @@ class Person:
 
 
 #the person class has a schedule meeting function which will take an input with another person object and see when they will be available to meet.
-#input: 2 people objects
+#input: a list of people objects
 #output: a list of lists showing the intersecting free times of the two comparing people
-def schedule_meeting(prsn1, prsn2, duration):
+def schedule_meeting(people, duration):
     available = []
+    all_occupied_times = []
+    earliest = "24:00"
+    latest = "00:00"
 
     #finding optimal range
-    earliest = max([prsn1.daily_act[0][0], prsn2.daily_act[0][0]])
-    latest = min([prsn1.daily_act[0][1], prsn2.daily_act[0][1]])
-    
-    # Combine both lists of occupied times
-    all_occupied_times = prsn1.schedule + prsn2.schedule
+    for person in people:
+        if earliest > person.daily_act[0][0]:
+            earliest = person.daily_act[0][0]
+        if latest < person.daily_act[0][1]:
+            latest = person.daily_act[0][1]
+        
+        all_occupied_times += person.schedule
 
     # Sort the occupied times by their start time
     all_occupied_times.sort(key=lambda x: x[1], reverse = True)
-
+        
     # Initialize the start and end times
     prev_end = latest
 
@@ -44,9 +49,10 @@ def schedule_meeting(prsn1, prsn2, duration):
         interval_start, interval_end = interval
 
         # Compare the current interval's start time with the end time of the previous interval
-        if prev_end > interval_end and interval_end > earliest:
+        if prev_end >= interval_end and interval_end > earliest:
             available.append([interval_end, prev_end])
-        prev_end = interval_start
+        if interval_start < prev_end:
+            prev_end = interval_start
 
 #verification code to check if the available times can accomodate for the desired duration of the meeting
 
@@ -67,25 +73,36 @@ def schedule_meeting(prsn1, prsn2, duration):
             result_minutes += 60
         result = result_minutes + result_hours*60
 
-        if(result > duration):
+        if(result >= duration):
             product.append(interval)
         
     return product
 
-#todo: create output method
-#       write 10 different inputs in inputs.txt
-#       write a readme
+def output(meetings):
+    # Open the file "Output.txt" for writing
+    with open("Output.txt", "w") as file:
+        # Iterate through the list and write each element to the file
+        file.write('Available times to meet:' + '\n')
+        for item in meetings:
+            file.write(str(item) + "\n")    
+
 
 # Example usage
-person1_booked_times = [['07:00', '08:30'], ['12:00', '13:00'], ['16:00', '18:00']]
-person1_available_times = [['07:30', '18:00']]
+#person1_booked_times = [['07:00', '9:30'],['9:36', '18:00']]
+#person1_available_times = [['07:30', '16:00']]
 
-person2_booked_times = [['07:30', '09:00'], ['12:30', '13:30'], ['17:00', '19:00']]
-person2_available_times = [['07:00', '19:00']]
-
-person1 = Person(person1_booked_times, person1_available_times)
-person2 = Person(person2_booked_times, person2_available_times)
-
-common_free_times = schedule_meeting(person1, person2, 30)
-print(common_free_times)
+#person2_booked_times = [['07:30', '08:00'], ['12:30', '13:30'], ['15:00', '19:00']]
+#person2_available_times = [['09:00', '19:30']]
+#
+#person3_booked_times = [['07:00', '8:30'],['9:36', '18:00']]
+#person3_available_times = [['07:30', '16:00']]
+#
+#person1 = Person(person1_booked_times, person1_available_times)
+#person2 = Person(person2_booked_times, person2_available_times)
+#person3 = Person(person3_booked_times, person3_available_times)
+#
+#people = [person1, person2, person3]
+#common_free_times = schedule_meeting(people,6)
+#output(common_free_times)
+#print(common_free_times)
 
