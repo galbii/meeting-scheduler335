@@ -1,4 +1,4 @@
-### Algorithm Engineering Project
+# Algorithm Engineering Project
 
 ## Project Description:
 
@@ -47,6 +47,7 @@ Do the same for the clockin/clockout time e.g.
 
 The program automtically processes these strings as lists and modifies them to be useable by the code
 
-# The duration is 30 minutes by default, but you can adjust it in the third option of the menu
-
 Inputs are manually inputed into the program or enter "q" to quit. The output of the directed input is copied to the file "Output.txt". For ease convenience, the output will be printed to the console as well.
+
+### The duration is 30 minutes by default, but you can adjust it in the third option of the menu
+

@@ -33,6 +33,7 @@ def schedule_planner():
                 print("\n\n[error] list is empty")
             else:
                 result = meeting.schedule_meeting(people, duration)
+                meeting.output(result)
                 print("\nAvailable meeting times have been stored in the 'Outputs.txt' file:")
                 print(result, "\n\n")
 
@@ -45,7 +46,7 @@ def schedule_planner():
             if people == []:
                 print("\n\n[error] list is empty")
             for person in people:
-                print(person.schedule, person.daily_act)
+                print(person.busy_schedule, person.working_period)
 
             print("Duration: ", duration)
 

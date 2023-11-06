@@ -1,8 +1,8 @@
 class Person:
-    def __init__(self, schedule, daily_act):
+    def __init__(self, busy_schedule, working_period):
 
         #data correction code to make sure the codes are in the correct format
-        for interval in schedule:
+        for interval in busy_schedule:
             for i in range(2):  
                 time_str = interval[i]
                 if len(time_str) < 5:
@@ -10,17 +10,17 @@ class Person:
                     interval[i] = '0' + time_str
 
         #same code for other list
-        for interval in daily_act:
+        for interval in working_period:
             for i in range(2):  
                 time_str = interval[i]
                 if len(time_str) < 5:
                     interval[i] = '0' + time_str
 
-        self.schedule = schedule
-        self.daily_act = daily_act
+        self.busy_schedule = busy_schedule
+        self.working_period = working_period
 
 
-#the person class has a schedule meeting function which will take an input with another person object and see when they will be available to meet.
+#the person class has a busy_schedule meeting function which will take an input with another person object and see when they will be available to meet.
 #input: a list of people objects
 #output: a list of lists showing the intersecting free times of the two comparing people
 def schedule_meeting(people, duration):
@@ -31,12 +31,12 @@ def schedule_meeting(people, duration):
 
     #finding optimal range
     for person in people:
-        if earliest > person.daily_act[0][0]:
-            earliest = person.daily_act[0][0]
-        if latest < person.daily_act[0][1]:
-            latest = person.daily_act[0][1]
+        if earliest > person.working_period[0][0]:
+            earliest = person.working_period[0][0]
+        if latest < person.working_period[0][1]:
+            latest = person.working_period[0][1]
         
-        all_occupied_times += person.schedule
+        all_occupied_times += person.busy_schedule
 
     # Sort the occupied times by their start time
     all_occupied_times.sort(key=lambda x: x[1], reverse = True)
@@ -102,7 +102,7 @@ def output(meetings):
 #person3 = Person(person3_booked_times, person3_available_times)
 #
 #people = [person1, person2, person3]
-#common_free_times = schedule_meeting(people,6)
+#common_free_times = busy_schedule_meeting(people,6)
 #output(common_free_times)
 #print(common_free_times)
 
